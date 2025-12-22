@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router"
 
 type IGenerateRequestBody = {
-  prompt: "请基于此 YouTube 视频生成文章：https://www.youtube.com/watch?v=4KdvcQKNfbQ"
-  mode: "url"
-  youtubeUrl: "https://www.youtube.com/watch?v=4KdvcQKNfbQ"
+  prompt: string
+  mode: "url" | "transcript"
+  youtubeUrl: `https://www.youtube.com/watch?v=${string}`
 }
 
 export const Route = createFileRoute("/api/generate")({
