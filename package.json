@@ -1,6 +1,7 @@
 {
   "name": "my-tanstack-app-pnpm",
-  "private": true,
+  "private": false,
+  "description": "An Youtube AI Article Generator APP Powered by TanStack Start.",
   "type": "module",
   "scripts": {
     "dev": "vite dev --port 3000 --open",
