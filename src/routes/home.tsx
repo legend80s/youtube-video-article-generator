@@ -12,7 +12,6 @@ export const Route = createFileRoute("/home")({
 import { useCompletion } from "@ai-sdk/react"
 import {
   AlertCircle,
-  ChevronRight,
   Copy,
   Download,
   FileText,
@@ -387,10 +386,10 @@ export default function YouTubeArticleGenerator() {
                 <button
                   onClick={handleGenerate}
                   disabled={isLoading || isProcessing}
-                  className={`w-full mt-8 py-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 text-lg font-semibold ${
+                  className={`w-full text-gray-100 mt-8 py-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 text-xl font-semibold bg-gradient-to-r from-red-600 to-orange-500  ${
                     isLoading || isProcessing
-                      ? "bg-gradient-to-r from-gray-400 to-gray-500 cursor-not-allowed"
-                      : "bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      ? "cursor-not-allowed"
+                      : "cursor-pointer  hover:from-red-700 hover:to-orange-600 shadow-lg hover:shadow-xl"
                   }`}
                 >
                   {isLoading || isProcessing ? (
@@ -400,9 +399,8 @@ export default function YouTubeArticleGenerator() {
                     </>
                   ) : (
                     <>
-                      <Sparkles className="w-6 h-6" />
-                      <span>✨ AI 生成文章</span>
-                      <ChevronRight className="w-5 h-5" />
+                      <span>✨</span>
+                      <span>AI 生成文章</span>
                     </>
                   )}
                 </button>
