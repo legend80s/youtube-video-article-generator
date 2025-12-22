@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/a11y/useButtonType: <explanation> */
 import { createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute("/youtube-article-generator")({
+export const Route = createFileRoute("/youtube-article-generator/")({
   component: YouTubeArticleGenerator,
 })
 
