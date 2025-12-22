@@ -30,7 +30,9 @@ import { useRef, useState } from "react"
 
 export default function YouTubeArticleGenerator() {
   const [activeTab, setActiveTab] = useState<"url" | "transcript">("url")
-  const [youtubeUrl, setYoutubeUrl] = useState("")
+  const [youtubeUrl, setYoutubeUrl] = useState(
+    "https://www.youtube.com/watch?v=4KdvcQKNfbQ",
+  )
   const [transcriptText, setTranscriptText] = useState("")
   const [isProcessing, setIsProcessing] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
@@ -47,7 +49,7 @@ export default function YouTubeArticleGenerator() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const transcriptRef = useRef<HTMLTextAreaElement>(null)
 
-  const { completion, input, setInput, handleSubmit, isLoading, error, stop } =
+  const { completion, complete, input, handleSubmit, isLoading, error, stop } =
     useCompletion({
       api: "/api/generate",
       onFinish: (prompt, completion) => {
@@ -103,17 +105,14 @@ export default function YouTubeArticleGenerator() {
         ? `请基于此 YouTube 视频生成文章：${youtubeUrl}`
         : `请基于以下视频文稿生成文章：\n\n${transcriptText}`
 
-    setInput(prompt)
-
-    // 触发生成
-    const formData = new FormData()
-    formData.append("prompt", prompt)
-    formData.append("mode", activeTab)
-    if (youtubeUrl) formData.append("youtubeUrl", youtubeUrl)
-
-    await fetch("/api/generate", {
-      method: "POST",
-      body: formData,
+    // 使用 complete 方法手动触发，传递额外参数
+    await complete(prompt, {
+      body: {
+        prompt,
+        mode: activeTab,
+        ...(youtubeUrl && { youtubeUrl }),
+        ...(transcriptText && { transcript: transcriptText }),
+      },
     })
   }
 
