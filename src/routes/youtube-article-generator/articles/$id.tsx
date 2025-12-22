@@ -1,5 +1,5 @@
 import { useCompletion } from "@ai-sdk/react"
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, useLocation } from "@tanstack/react-router"
 import {
   AlertCircle,
   Copy,
@@ -11,7 +11,7 @@ import {
   Video,
 } from "lucide-react"
 import { useEffect, useState } from "react"
-import { ProgressBar } from "~/components/ProgressBar"
+import { ProgressBar } from "@/components/ProgressBar"
 
 export const Route = createFileRoute("/youtube-article-generator/articles/$id")(
   {
@@ -29,8 +29,17 @@ interface ArticleData {
   mode: "url" | "transcript"
 }
 
+interface RouteState {
+  mode: "url" | "transcript"
+  youtubeUrl?: string
+  transcriptText?: string
+  prompt: string
+}
+
 function Article() {
   const { id } = Route.useParams()
+  const location = useLocation()
+  const routeState = (location.state || {}) as Partial<RouteState>
   const [article, setArticle] = useState<ArticleData | null>(null)
   const [darkMode, setDarkMode] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -115,16 +124,10 @@ function Article() {
     URL.revokeObjectURL(url)
   }
 
-  // 模拟从 URL 参数或本地存储加载文章数据
+  // 从路由状态加载参数并生成文章
   useEffect(() => {
-    // 这里可以从 URL 参数、本地存储或 API 加载文章数据
-    const searchParams = new URLSearchParams(window.location.search)
-    const prompt = searchParams.get("prompt")
-    const mode = searchParams.get("mode") as "url" | "transcript"
-    const videoUrl = searchParams.get("videoUrl")
-
-    if (prompt && mode) {
-      generateArticle(prompt, mode, videoUrl || undefined)
+    if (routeState.mode && routeState.prompt) {
+      generateArticle(routeState.prompt, routeState.mode, routeState.youtubeUrl)
     } else {
       // 如果没有参数，显示一个默认的加载状态
       setArticle({
@@ -136,7 +139,7 @@ function Article() {
         mode: "url",
       })
     }
-  }, [id])
+  }, [id, routeState])
 
   return (
     <div
