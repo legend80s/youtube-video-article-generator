@@ -24,31 +24,39 @@ export const Route = createFileRoute("/api/generate")({
         const chunks = content.split(" ")
         let index = 0
 
-        // 创建流式响应
+        // 创建流式响应 - Vercel AI SDK 格式
         const stream = new ReadableStream({
           async start(controller) {
             const encoder = new TextEncoder()
+            const id = `stream-${Date.now()}`
 
-            // 发送初始消息
+            // Vercel AI SDK 期待的正确格式 - 流式文本响应
+            // 开始发送流
             controller.enqueue(
-              encoder.encode('data: {"content": "", "status": "start"}\n\n'),
+              encoder.encode(
+                `data: ${JSON.stringify({ id, type: "text-start" })}\n\n`,
+              ),
             )
 
-            // 模拟流式输出
+            // 流式输出文本片段
             for (const chunk of chunks) {
-              await new Promise(resolve => setTimeout(resolve, 50))
+              await new Promise(resolve => setTimeout(resolve, 500))
 
-              const data = {
-                content: chunk + " ",
-                progress: Math.round((index / chunks.length) * 100),
-                status: index === chunks.length - 1 ? "done" : "processing",
-              }
-
+              // 发送文本增量
               controller.enqueue(
-                encoder.encode(`data: ${JSON.stringify(data)}\n\n`),
+                encoder.encode(
+                  `data: ${JSON.stringify({ id, type: "text-delta", delta: chunk + " " })}\n\n`,
+                ),
               )
               index++
             }
+
+            // 结束流
+            controller.enqueue(
+              encoder.encode(
+                `data: ${JSON.stringify({ id, type: "text-end" })}\n\n`,
+              ),
+            )
 
             // 发送完成标记
             controller.enqueue(encoder.encode("data: [DONE]\n\n"))
