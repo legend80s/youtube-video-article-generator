@@ -506,43 +506,69 @@ export default function YouTubeArticleGenerator() {
                 >
                   {isLoading ? (
                     <div className="space-y-4">
-                      {/* 流式生成效果 */}
-                      <div className="space-y-3">
+                      {/* 实时流式输出 */}
+                      <div className="prose dark:prose-invert max-w-none">
                         <div
-                          className={`h-8 rounded-lg animate-pulse ${
-                            darkMode ? "bg-gray-700" : "bg-gray-300"
-                          }`}
-                        ></div>
-                        <div
-                          className={`h-4 rounded-lg animate-pulse ${
-                            darkMode ? "bg-gray-700" : "bg-gray-300"
-                          }`}
-                          style={{ width: "90%" }}
-                        ></div>
-                        <div
-                          className={`h-4 rounded-lg animate-pulse ${
-                            darkMode ? "bg-gray-700" : "bg-gray-300"
-                          }`}
-                          style={{ width: "80%" }}
-                        ></div>
-                        <div
-                          className={`h-4 rounded-lg animate-pulse ${
-                            darkMode ? "bg-gray-700" : "bg-gray-300"
-                          }`}
-                          style={{ width: "85%" }}
-                        ></div>
-                      </div>
-
-                      {/* 打字光标效果 */}
-                      <div className="flex items-center space-x-2 mt-8">
-                        <div className="w-3 h-3 rounded-full bg-gradient-to-r from-red-500 to-orange-500 animate-bounce"></div>
-                        <span
-                          className={`text-sm ${
-                            darkMode ? "text-gray-400" : "text-gray-600"
+                          className={`whitespace-pre-wrap font-sans leading-relaxed ${
+                            darkMode ? "text-gray-100" : "text-gray-900"
                           }`}
                         >
-                          AI 正在思考并创作...
-                        </span>
+                          {completion ? (
+                            <div className="relative">
+                              <pre className="whitespace-pre-wrap">
+                                {completion}
+                              </pre>
+                              {/* 打字光标效果 */}
+                              <span className="inline-block w-0.5 h-5 bg-gradient-to-r from-red-500 to-orange-500 animate-pulse ml-1"></span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center space-x-3">
+                              <div className="w-3 h-3 rounded-full bg-gradient-to-r from-red-500 to-orange-500 animate-bounce"></div>
+                              <span
+                                className={`text-sm ${
+                                  darkMode ? "text-gray-400" : "text-gray-600"
+                                }`}
+                              >
+                                AI 正在思考并创作...
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* 进度指示器 */}
+                      <div className="mt-6">
+                        <div className="flex justify-between text-sm mb-2">
+                          <span
+                            className={`${
+                              darkMode ? "text-gray-400" : "text-gray-600"
+                            }`}
+                          >
+                            生成进度
+                          </span>
+                          <span
+                            className={`font-medium ${
+                              darkMode ? "text-yellow-400" : "text-yellow-600"
+                            }`}
+                          >
+                            {Math.round(
+                              ((completion?.length || 0) / 500) * 100,
+                            )}
+                            %
+                          </span>
+                        </div>
+                        <div
+                          className={`h-2 rounded-full overflow-hidden ${
+                            darkMode ? "bg-gray-700" : "bg-gray-300"
+                          }`}
+                        >
+                          <div
+                            className="h-full bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-300"
+                            style={{
+                              width: `${Math.min(((completion?.length || 0) / 500) * 100, 100)}%`,
+                            }}
+                          ></div>
+                        </div>
                       </div>
                     </div>
                   ) : completion || generatedArticles.length > 0 ? (
