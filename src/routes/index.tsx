@@ -87,14 +87,14 @@ function App() {
             </a>
 
             <Link
-              to="/home"
+              to="/youtube-article-generator"
               className="px-8 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-lg transition-colors shadow-lg shadow-cyan-500/50"
               activeProps={{
                 className:
                   "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
               }}
             >
-              <span className="font-medium">home</span>
+              <span className="font-medium">Youtube Article Generator</span>
             </Link>
 
             <p className="text-gray-400 text-sm mt-2">

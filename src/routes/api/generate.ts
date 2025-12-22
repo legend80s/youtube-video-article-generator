@@ -40,7 +40,7 @@ export const Route = createFileRoute("/api/generate")({
 
             // 流式输出文本片段
             for (const chunk of chunks) {
-              await new Promise(resolve => setTimeout(resolve, 180))
+              await new Promise(resolve => setTimeout(resolve, 580))
 
               // 发送文本增量
               controller.enqueue(

@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/a11y/useButtonType: <explanation> */
 import { createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute("/home")({
+export const Route = createFileRoute("/youtube-article-generator")({
   component: YouTubeArticleGenerator,
 })
 
@@ -136,7 +136,7 @@ export default function YouTubeArticleGenerator() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
-    a.download = `${article.title.replace(/\s+/g, "_")}.md`
+    a.download = `${article.title.replace(/\s+/g, `_`)}.md`
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -212,7 +212,6 @@ export default function YouTubeArticleGenerator() {
           </div>
         </div>
       </header>
-
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -420,7 +419,7 @@ export default function YouTubeArticleGenerator() {
                     {generatedArticles.map(article => (
                       // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
                       // biome-ignore lint/a11y/noStaticElementInteractions: <explanation>
-                      <div
+                      (<div
                         key={article.id}
                         className={`p-4 rounded-xl cursor-pointer transition-all hover:scale-[1.02] ${
                           darkMode
@@ -441,7 +440,7 @@ export default function YouTubeArticleGenerator() {
                         >
                           {new Date(article.timestamp).toLocaleString()}
                         </p>
-                      </div>
+                      </div>)
                     ))}
                   </div>
                 </div>
@@ -685,7 +684,7 @@ export default function YouTubeArticleGenerator() {
                     </div>
                   ) : (
                     /* 空状态 */
-                    <div className="flex flex-col items-center justify-center h-full text-center py-12">
+                    (<div className="flex flex-col items-center justify-center h-full text-center py-12">
                       <div
                         className={`p-6 rounded-full mb-6 ${
                           darkMode ? "bg-gray-800" : "bg-gray-100"
@@ -714,7 +713,7 @@ export default function YouTubeArticleGenerator() {
                           <br />• 视频摘要 • 关键观点 • 深入分析 • 个人见解
                         </p>
                       </div>
-                    </div>
+                    </div>)
                   )}
                 </div>
               </div>
@@ -722,7 +721,6 @@ export default function YouTubeArticleGenerator() {
           </div>
         </div>
       </main>
-
       {/* 底部信息 */}
       <footer
         className={`mt-12 py-6 border-t ${

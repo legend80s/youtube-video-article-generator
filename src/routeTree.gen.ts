@@ -9,7 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as HomeRouteImport } from './routes/home'
+import { Route as YoutubeArticleGeneratorRouteImport } from './routes/youtube-article-generator'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiGenerateRouteImport } from './routes/api/generate'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
@@ -20,9 +20,9 @@ import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
 
-const HomeRoute = HomeRouteImport.update({
-  id: '/home',
-  path: '/home',
+const YoutubeArticleGeneratorRoute = YoutubeArticleGeneratorRouteImport.update({
+  id: '/youtube-article-generator',
+  path: '/youtube-article-generator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -73,7 +73,7 @@ const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/home': typeof HomeRoute
+  '/youtube-article-generator': typeof YoutubeArticleGeneratorRoute
   '/api/generate': typeof ApiGenerateRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -85,7 +85,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/home': typeof HomeRoute
+  '/youtube-article-generator': typeof YoutubeArticleGeneratorRoute
   '/api/generate': typeof ApiGenerateRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -98,7 +98,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/home': typeof HomeRoute
+  '/youtube-article-generator': typeof YoutubeArticleGeneratorRoute
   '/api/generate': typeof ApiGenerateRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -112,7 +112,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/home'
+    | '/youtube-article-generator'
     | '/api/generate'
     | '/demo/api/names'
     | '/demo/start/api-request'
@@ -124,7 +124,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/home'
+    | '/youtube-article-generator'
     | '/api/generate'
     | '/demo/api/names'
     | '/demo/start/api-request'
@@ -136,7 +136,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/home'
+    | '/youtube-article-generator'
     | '/api/generate'
     | '/demo/api/names'
     | '/demo/start/api-request'
@@ -149,7 +149,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  HomeRoute: typeof HomeRoute
+  YoutubeArticleGeneratorRoute: typeof YoutubeArticleGeneratorRoute
   ApiGenerateRoute: typeof ApiGenerateRoute
   DemoApiNamesRoute: typeof DemoApiNamesRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
@@ -162,11 +162,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/home': {
-      id: '/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof HomeRouteImport
+    '/youtube-article-generator': {
+      id: '/youtube-article-generator'
+      path: '/youtube-article-generator'
+      fullPath: '/youtube-article-generator'
+      preLoaderRoute: typeof YoutubeArticleGeneratorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -237,7 +237,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  HomeRoute: HomeRoute,
+  YoutubeArticleGeneratorRoute: YoutubeArticleGeneratorRoute,
   ApiGenerateRoute: ApiGenerateRoute,
   DemoApiNamesRoute: DemoApiNamesRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
