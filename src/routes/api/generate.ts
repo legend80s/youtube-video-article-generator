@@ -3,12 +3,18 @@ import { createFileRoute } from "@tanstack/react-router"
 type IGenerateRequestBody = {
   prompt: string
   mode: "url" | "transcript"
+  transcript?: string
   youtubeUrl: `https://www.youtube.com/watch?v=${string}`
 }
 
 export const Route = createFileRoute("/api/generate")({
   server: {
     handlers: {
+      // OPTIONS: async () => {
+      //   return {
+      //     message: "OK",
+      //   }
+      // },
       POST: async ({ request }) => {
         const body: IGenerateRequestBody = await request.json()
         console.log("body:", body)

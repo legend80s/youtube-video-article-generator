@@ -12,6 +12,13 @@ import {
 } from "lucide-react"
 import { useRef, useState } from "react"
 
+interface RouteState {
+  mode: "url" | "transcript"
+  youtubeUrl?: string
+  transcript?: string
+  prompt: string
+}
+
 export const Route = createFileRoute("/youtube-article-generator/")({
   component: YouTubeArticleGenerator,
 })
@@ -19,9 +26,9 @@ export const Route = createFileRoute("/youtube-article-generator/")({
 export default function YouTubeArticleGenerator() {
   const [activeTab, setActiveTab] = useState<"url" | "transcript">("url")
   const [youtubeUrl, setYoutubeUrl] = useState(
-    "https://www.youtube.com/watch?v=4KdvcQKNfbQ",
+    "https://www.youtube.com/watch?v=4KdvcQKNfbQx",
   )
-  const [transcriptText, setTranscriptText] = useState("")
+  const [transcript, setTranscriptText] = useState("")
   const [darkMode, setDarkMode] = useState(false)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -223,7 +230,7 @@ export default function YouTubeArticleGenerator() {
                   </label>
                   <textarea
                     ref={transcriptRef}
-                    value={transcriptText}
+                    value={transcript}
                     onChange={e => setTranscriptText(e.target.value)}
                     placeholder="在这里粘贴您的视频文稿内容..."
                     rows={10}
@@ -282,11 +289,13 @@ export default function YouTubeArticleGenerator() {
                 mode: activeTab,
                 youtubeUrl: activeTab === "url" ? youtubeUrl : undefined,
                 transcriptText:
-                  activeTab === "transcript" ? transcriptText : undefined,
+                  activeTab === "transcript"
+                    ? transcript
+                    : "00:00:02 This is the most important property of\n00:00:05 exclusive or operation also known as\n00:00:08 zor. If you apply the same value twice,\n00:00:12 you get the original value. And to\n00:00:15 demonstrate that this is actually true,\n00:00:16 we can bust out Python and take all of\n00:00:19 the possible combinations of two beats.\n00:00:21 So let take a in a range from 0 to 1\n00:00:24 and b in a range from 0 to 1.",
                 prompt:
                   activeTab === "url"
                     ? `请基于此 YouTube 视频生成文章：${youtubeUrl}`
-                    : `请基于以下视频文稿生成文章：\n\n${transcriptText}`,
+                    : `请基于以下视频文稿生成文章：\n\n${transcript}`,
               }}
               className="w-full text-gray-100 mt-8 py-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 text-xl font-semibold bg-gradient-to-r from-red-600 to-orange-500 cursor-pointer hover:from-red-700 hover:to-orange-600 shadow-lg hover:shadow-xl"
               onClick={e => {
@@ -295,7 +304,7 @@ export default function YouTubeArticleGenerator() {
                   alert("请输入 YouTube 链接")
                   return
                 }
-                if (activeTab === "transcript" && !transcriptText.trim()) {
+                if (activeTab === "transcript" && !transcript.trim()) {
                   e.preventDefault()
                   alert("请输入视频文稿")
                   return

@@ -4,13 +4,12 @@ import {
   AlertCircle,
   Copy,
   Download,
-  Loader2,
   Sparkles,
   ThumbsDown,
   ThumbsUp,
   Video,
 } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ProgressBar } from "@/components/ProgressBar"
 
 export const Route = createFileRoute("/youtube-article-generator/articles/$id")(
@@ -38,14 +37,16 @@ interface RouteState {
 
 function Article() {
   const { id } = Route.useParams()
-  const location = useLocation()
-  const routeState = (location.state || {}) as Partial<RouteState>
+  const routeState: RouteState = useLocation({ select: location => location.state })
   const [article, setArticle] = useState<ArticleData | null>(null)
   const [darkMode, setDarkMode] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
+  const hasGeneratedRef = useRef(false)
 
   const { completion, complete, isLoading, error, stop } = useCompletion({
-    api: "/api/generate",
+    api: "http://127.0.0.1:8000/api/youtube-articles/generate_stream",
+
+
     onFinish: (prompt, content) => {
       setIsGenerating(false)
       const newArticle: ArticleData = {
@@ -100,9 +101,11 @@ function Article() {
     }
     setArticle(newArticle)
 
+    console.log('routeState', routeState)
+
     await complete(prompt, {
       body: {
-        prompt,
+        transcript: routeState.transcriptText || '',
         mode,
         ...(videoUrl && { youtubeUrl: videoUrl }),
       },
@@ -123,12 +126,21 @@ function Article() {
     a.click()
     URL.revokeObjectURL(url)
   }
-
+  useEffect(() => {
+    // test strict mode twice render
+    console.log("useEffect run once", Date.now())
+  }, [])
   // 从路由状态加载参数并生成文章
   useEffect(() => {
-    if (routeState.mode && routeState.prompt) {
+    console.log("routeState:", routeState)
+
+    // 防止重复调用 - 使用ref来跟踪是否已经生成过
+    if (routeState.mode && routeState.prompt && !hasGeneratedRef.current) {
+      hasGeneratedRef.current = true // 标记为已生成
+
+      // 防止在开发模式下重复调用
       generateArticle(routeState.prompt, routeState.mode, routeState.youtubeUrl)
-    } else {
+    } else if (!routeState.mode || !routeState.prompt) {
       // 如果没有参数，显示一个默认的加载状态
       setArticle({
         id: id,
@@ -139,7 +151,7 @@ function Article() {
         mode: "url",
       })
     }
-  }, [id, routeState])
+  }, [id, routeState.mode, routeState.prompt, routeState.youtubeUrl])
 
   return (
     <div
