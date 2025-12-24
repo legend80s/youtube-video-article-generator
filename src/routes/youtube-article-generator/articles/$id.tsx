@@ -37,7 +37,9 @@ interface RouteState {
 
 function Article() {
   const { id } = Route.useParams()
-  const routeState: RouteState = useLocation({ select: location => location.state })
+  const routeState: RouteState = useLocation({
+    select: location => location.state,
+  })
   const [article, setArticle] = useState<ArticleData | null>(null)
   const [darkMode, setDarkMode] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -45,7 +47,6 @@ function Article() {
 
   const { completion, complete, isLoading, error, stop } = useCompletion({
     api: "http://127.0.0.1:8000/api/youtube-articles/generate_stream",
-
 
     onFinish: (prompt, content) => {
       setIsGenerating(false)
@@ -101,11 +102,11 @@ function Article() {
     }
     setArticle(newArticle)
 
-    console.log('routeState', routeState)
+    console.log("routeState", routeState)
 
     await complete(prompt, {
       body: {
-        transcript: routeState.transcriptText || '',
+        transcript: routeState.transcriptText,
         mode,
         ...(videoUrl && { youtubeUrl: videoUrl }),
       },
@@ -306,13 +307,13 @@ function Article() {
 
                   {/* 文章内容 */}
                   <div className="prose dark:prose-invert max-w-none">
-                    <div
+                    <pre
                       className={`whitespace-pre-wrap leading-relaxed ${
                         darkMode ? "text-gray-200" : "text-gray-800"
                       }`}
                     >
                       {article.content}
-                    </div>
+                    </pre>
                   </div>
 
                   {/* 文章元数据 */}

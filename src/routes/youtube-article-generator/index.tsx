@@ -289,9 +289,7 @@ export default function YouTubeArticleGenerator() {
                 mode: activeTab,
                 youtubeUrl: activeTab === "url" ? youtubeUrl : undefined,
                 transcriptText:
-                  activeTab === "transcript"
-                    ? transcript
-                    : "00:00:02 This is the most important property of\n00:00:05 exclusive or operation also known as\n00:00:08 zor. If you apply the same value twice,\n00:00:12 you get the original value. And to\n00:00:15 demonstrate that this is actually true,\n00:00:16 we can bust out Python and take all of\n00:00:19 the possible combinations of two beats.\n00:00:21 So let take a in a range from 0 to 1\n00:00:24 and b in a range from 0 to 1.",
+                  activeTab === "transcript" ? transcript : undefined,
                 prompt:
                   activeTab === "url"
                     ? `请基于此 YouTube 视频生成文章：${youtubeUrl}`
